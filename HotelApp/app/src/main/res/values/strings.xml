@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ToyApp</string>
+    <string name="searchDialog">Enter a toy to search for!</string>
+    <string name="welcomeMessage">Search for toys!</string>
+</resources>
