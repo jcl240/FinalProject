@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.view.View.OnLongClickListener;
 import android.graphics.drawable.Drawable;
@@ -24,8 +25,10 @@ import android.view.View.OnDragListener;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -50,7 +53,28 @@ public class searchActivity extends AppCompatActivity {
     }
 
 
-    byte[] hotelByte=null;
+    public void addListenerOnRatingBar() {
+
+        RatingBar rating = (RatingBar) findViewById(R.id.ratingBar);
+        RatingBar price = (RatingBar) findViewById(R.id.ratingBar2);
+
+        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            public void onRatingChanged(RatingBar ratingBar, float rating,
+                                        boolean fromUser) {
+
+
+            }
+        });
+        price.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            public void onRatingChanged(RatingBar ratingBar, float rating,
+                                        boolean fromUser) {
+
+
+            }
+        });
+    }
+
+        byte[] hotelByte=null;
     int byteLength=0;
 
     hotelList hotelList;
@@ -103,8 +127,32 @@ public class searchActivity extends AppCompatActivity {
                 {
                     in=new BufferedInputStream(hotelConnection.getInputStream());
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
+            OutputStream out=null;
+
+            try
+            {
+                if (hotelConnection!=null)
+                {
+                    out=new BufferedOutputStream(hotelConnection.getOutputStream());
+                }
+            }
+
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            try
+            {
+                if(out!=null)
+                {
+                    //send name and location queries to server here
+                }
+            }
             catch (IOException e)
             {
                 e.printStackTrace();
@@ -129,7 +177,7 @@ public class searchActivity extends AppCompatActivity {
                     @Override
                     public void run()
                     {
-                        populateListView();
+                        populateListView();         //add hotels to listView
                     }
                 });
             }
