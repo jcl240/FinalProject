@@ -42,7 +42,6 @@ public class searchActivity extends AppCompatActivity {
         setContentView(R.layout.searchscreen);
         Intent intent=getIntent();
 
-        View iView = findViewById(R.id.imageView);
         new gethotelData().execute();
     }
 

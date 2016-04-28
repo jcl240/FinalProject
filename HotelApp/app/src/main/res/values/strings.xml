@@ -2,4 +2,6 @@
     <string name="app_name">ToyApp</string>
     <string name="searchDialog">Enter a toy to search for!</string>
     <string name="welcomeMessage">Search for toys!</string>
+    <string name="location">Search by location</string>
+    <string name="name">Search by name</string>
 </resources>

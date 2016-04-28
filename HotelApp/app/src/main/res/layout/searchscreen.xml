@@ -27,6 +27,48 @@
         android:id="@+id/hotel_list"
         android:layout_below="@+id/button3"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#aeaeae" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar"
+        android:stepSize=".1"
+        style="@style/Base.Widget.AppCompat.RatingBar.Small"
+        android:layout_above="@+id/hotel_list"
+        android:layout_toLeftOf="@+id/button3"
+        android:layout_toStartOf="@+id/button3"
+        android:layout_marginRight="34dp"
+        android:layout_marginEnd="34dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Set rating"
+        android:id="@+id/textView2"
+        android:layout_above="@+id/ratingBar"
+        android:layout_alignLeft="@+id/ratingBar"
+        android:layout_alignStart="@+id/ratingBar" />
+
+    <RatingBar
+        style="@style/Base.Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar2"
+        android:stepSize=".1"
+        android:layout_above="@+id/hotel_list"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Set price"
+        android:id="@+id/textView3"
+        android:layout_above="@+id/ratingBar2"
+        android:layout_alignParentLeft="true" />
 
 </RelativeLayout>
