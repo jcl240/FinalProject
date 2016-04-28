@@ -36,14 +36,19 @@ import java.util.List;
 
 public class searchActivity extends AppCompatActivity {
 
+    String nameQuery;
+    String locationQuery;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.searchscreen);
         Intent intent=getIntent();
-
+        nameQuery = intent.getStringExtra("nameQuery");
+        locationQuery = intent.getStringExtra("locationQuery");
         new gethotelData().execute();
     }
+
 
     byte[] hotelByte=null;
     int byteLength=0;

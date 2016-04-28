@@ -21,10 +21,17 @@ public class homeActivity extends AppCompatActivity {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView search = (TextView)findViewById(R.id.textView);
+                TextView searchName = (TextView)findViewById(R.id.textView);
+                TextView searchLocation = (TextView)findViewById(R.id.editText);
                 Intent intent = new Intent(homeActivity.this, searchActivity.class);
-                String searchQuery = search.getText().toString();
-                intent.putExtra("searchQuery", searchQuery);
+                String nameQuery = searchName.getText().toString();
+                String locationQuery = searchName.getText().toString();
+                if(nameQuery == "@string/name")
+                    nameQuery = "";
+                if(locationQuery == "@string/location" || locationQuery == "")
+                    locationQuery = "";
+                intent.putExtra("nameQuery", nameQuery);
+                intent.putExtra("locationQuery", locationQuery);
                 homeActivity.this.startActivity(intent);
             }
         });
