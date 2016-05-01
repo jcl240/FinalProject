@@ -59,22 +59,26 @@ public class searchActivity extends AppCompatActivity {
         RatingBar price = (RatingBar) findViewById(R.id.ratingBar2);
 
         rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            public void onRatingChanged(RatingBar ratingBar, float rating,
+            public void onRatingChanged(RatingBar ratingBar, float newRating,
                                         boolean fromUser) {
-
-
+                refreshNewRating((int)newRating);
             }
         });
         price.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            public void onRatingChanged(RatingBar ratingBar, float rating,
+            public void onRatingChanged(RatingBar ratingBar, float newPrice,
                                         boolean fromUser) {
-
-
+                refreshNewPrice((int) newPrice);
             }
         });
     }
 
-        byte[] hotelByte=null;
+    public void refreshNewRating(int newRating){}
+
+    public void refreshNewPrice(int newPrice){}
+
+
+
+    byte[] hotelByte=null;
     int byteLength=0;
 
     hotelList hotelList;
@@ -146,7 +150,7 @@ public class searchActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            try
+            /*try
             {
                 if(out!=null)
                 {
@@ -156,7 +160,7 @@ public class searchActivity extends AppCompatActivity {
             catch (IOException e)
             {
                 e.printStackTrace();
-            }
+            }*/
 
             try
             {
@@ -207,6 +211,18 @@ public class searchActivity extends AppCompatActivity {
 
     public class hotel
     {
+        public String getName() {
+            return name;
+        }
+
+        public int getRating() {
+            return rating;
+        }
+
+        public int getPrice() {
+            return price;
+        }
+
         private String name=null;
         private int rating=0;
         private int price=0;
@@ -218,18 +234,23 @@ public class searchActivity extends AppCompatActivity {
             byte[] namebuffer=new byte[nameLength];
             hotelBuffer.get(namebuffer, 0, nameLength);
             this.name=new String(namebuffer);
-            this.rating=hotelBuffer.getInt();
             this.price=hotelBuffer.getInt();
+            this.rating=hotelBuffer.getInt();
         }
 
-        public hotel(String name, int price) {
-            name = name;
-            price = price;
+        public hotel(String name, int price, int rating) {
+            this.name = name;
+            this.price = price;
+            this.rating = rating;
         }
     }
 
     public class hotelList
     {
+        public hotel getHotel(int position) {
+            return hotelList.get(position);
+        }
+
         private ArrayList<hotel> hotelList=new ArrayList<hotel>();
 
             hotelList(byte[] hotelListArray, int length)
@@ -261,7 +282,7 @@ public class searchActivity extends AppCompatActivity {
 
         public View getView(int position, View convertView, ViewGroup parent){
             View view = convertView;
-            hotel hotel = hotelList.gethotel(position);
+            hotel hotel = hotelList.getHotel(position);
 
             if (convertView == null){       //if the view is null, create the view
                 view = getLayoutInflater().inflate(R.layout.list_item, parent, false);
@@ -269,10 +290,10 @@ public class searchActivity extends AppCompatActivity {
 
 
             TextView name = (TextView) view.findViewById(R.id.item_name);
-            name.setText(hotel.gethotelName());             //find and set the name
+            name.setText(hotel.getName());             //find and set the name
 
-            TextView rating = (ImageView) view.findViewById(R.id.item_list_image);
-            rating.setText(hotel.gethotelRating());
+            TextView rating = (TextView) view.findViewById(R.id.item_rating);
+            rating.setText(hotel.getRating());
 
             TextView price = (TextView) view.findViewById(R.id.item_price);
             price.setText(Integer.toString(hotel.getPrice()));    //find and set the price
