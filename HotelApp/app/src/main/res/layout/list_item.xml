@@ -2,16 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/item_list_image"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="false"
-        android:src="@drawable/cart"
-        android:layout_alignParentEnd="false" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -21,8 +11,7 @@
         android:text="Name"
         android:textStyle="bold"
         android:id="@+id/item_name"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/item_list_image" />
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -35,4 +24,16 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="6dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Rating"
+        android:id="@+id/item_rating"
+        android:layout_alignBottom="@+id/item_price"
+        android:layout_toLeftOf="@+id/item_price"
+        android:layout_toStartOf="@+id/item_price" />
+
 </RelativeLayout>
