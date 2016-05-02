@@ -1,32 +1,14 @@
 package project4;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.FileOutputStream;
-import java.io.FilterOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.Buffer;
-import java.nio.charset.Charset;
-import java.util.Scanner;
-
-import org.apache.commons.io.IOUtils;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -34,9 +16,6 @@ import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-
-import com.google.common.base.Charsets;
-
 import project4.HotelSearch.HotelMapper;
 import project4.HotelSearch.HotelReducer;
 
@@ -65,23 +44,16 @@ public class Server
 		return this.clientSocket;
 	}
 	
-	public void runMapReduce(Socket querySocket) throws IOException, ClassNotFoundException
-	{
-		//Test code please help guys!
+	public void runMapReduce(Socket socket) throws IOException, ClassNotFoundException
+	{	
 		String name=null;
 		String location=null;
-		StringWriter writer=new StringWriter();
-		Scanner choice=new Scanner(System.in);
-		System.out.println("Plase enter the name");
-		name=choice.next();
-		System.out.println("Please enter the location");
-		location=choice.next();
-		querySocket.getOutputStream().write(name.getBytes());
-		querySocket.getOutputStream().write(location.getBytes());
-		querySocket.getOutputStream().flush();
-		name=IOUtils.toString(querySocket.getInputStream(), Charsets.UTF_8);
-			
-		//SetName and location will be the search queries from the client's socket outputstream ot the server
+		
+		BufferedReader br=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		String getNameLocation[]=br.readLine().split("\\s+");
+		name=getNameLocation[0];
+		location=getNameLocation[1];
+		
 		HotelSearch.HotelMapper.setName(name);
 		HotelSearch.HotelMapper.setLocation(location);
 		JobConf conf=new JobConf(HotelSearch.class);
@@ -120,8 +92,7 @@ public class Server
 			e.printStackTrace();
 		}
 		
-		FileOutputFormat.setOutputPath(job, new Path(querySocket.getInputStream().toString()));
-		//The results will go to the client's socket input stream where the info will go to the appropriate B+ trees
+		FileOutputFormat.setOutputPath(job, new Path("C:/Users/Rachid/Desktop/hadoop-2.6.4/output-hotels"));
 		
 		try 
 		{
@@ -142,13 +113,50 @@ public class Server
 		{
 			e.printStackTrace();
 		}
+		
+		OutputFile(socket.getOutputStream());
 	}
 	
-	public void runServer()
+	public static void OutputFile(OutputStream out)
+	{
+		Path path=new Path("C:/Users/Rachid/Desktop/hadoop-2.6.4/output-hotels");
+		Configuration conf=new Configuration();
+		FileSystem fs=null;
+		
+		try 
+		{
+			fs=FileSystem.get(conf);
+		} 
+		
+		catch (IOException e1) 
+		{
+			e1.printStackTrace();
+		}
+		
+		try 
+		{
+			BufferedReader br=new BufferedReader(new InputStreamReader(fs.open(path)));
+			String hotels=null;
+			hotels=br.readLine();
+			DataOutputStream output=new DataOutputStream(out);
+			while(hotels!=null)
+			{
+				output.write(hotels.getBytes());
+				output.flush();
+			}
+		} 
+		
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void runServer() throws ClassNotFoundException, IOException
 	{
 		try 
 		{
-			this.setServerSocket(new ServerSocket(9990));
+			this.setServerSocket(new ServerSocket(7777));
 		} 
 		
 		catch (IOException e) 
@@ -172,7 +180,7 @@ public class Server
 		}
 	}
 	
-	public class HandleConnection extends Thread
+	public class HandleConnection extends Thread//Resets connection for some reason
 	{
 		private Socket connectionSocket;
 		
@@ -201,22 +209,18 @@ public class Server
 			catch (ClassNotFoundException e) 
 			{
 				e.printStackTrace();
-			}
+			} 
 			
-			catch (IOException e)
+			catch (IOException e) 
 			{
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	
 	public static void main(String[] args)throws Exception
 	{
 		Server server=new Server();
-		//server.runServer();
-		Socket mySocket=new Socket(InetAddress.getByName("Rachid-PC"), 135);
-		server.runMapReduce(mySocket);
-		mySocket.close();
+		server.runServer();
 	}
 }
