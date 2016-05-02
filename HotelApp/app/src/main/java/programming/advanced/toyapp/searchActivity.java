@@ -41,6 +41,8 @@ public class searchActivity extends AppCompatActivity {
 
     String nameQuery;
     String locationQuery;
+    ArrayList<hotel> array = new ArrayList<hotel>();
+    hotelList hotels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,12 @@ public class searchActivity extends AppCompatActivity {
         Intent intent=getIntent();
         nameQuery = intent.getStringExtra("nameQuery");
         locationQuery = intent.getStringExtra("locationQuery");
-      //  new gethotelData().execute();
+        new gethotelData().execute();
+
+
+        /*hotel hotel = new hotel("a",2,3);
+        hotels.hotelList.add(hotel);            TEST CODE FOR ADAPTER
+        populateListView();*/
     }
 
 
@@ -81,8 +88,6 @@ public class searchActivity extends AppCompatActivity {
     byte[] hotelByte=null;
     int byteLength=0;
 
-    hotelList hotelList;
-
    
     public void cancel(View view)
     {
@@ -103,7 +108,7 @@ public class searchActivity extends AppCompatActivity {
 
             try
             {
-                hotelURL=new URL("http://people.cs.georgetown.edu/~wzhou/hotel.data");
+               // hotelURL=new URL("http://people.cs.georgetown.edu/~wzhou/hotel.data"); need to connect to server here
             }
 
             catch (MalformedURLException e)
@@ -174,16 +179,15 @@ public class searchActivity extends AppCompatActivity {
                         int readCursor=in.read(hotelByte, cursor, byteLength-cursor);
                         cursor+=readCursor;
                     }
+                    hotels = new hotelList(hotelByte, byteLength);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            populateListView();         //add hotels to listView
+                        }
+                    });
                 }
 
-                runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        populateListView();         //add hotels to listView
-                    }
-                });
             }
 
             catch (IOException e)
@@ -253,7 +257,11 @@ public class searchActivity extends AppCompatActivity {
 
         private ArrayList<hotel> hotelList=new ArrayList<hotel>();
 
-            hotelList(byte[] hotelListArray, int length)
+        public hotelList(ArrayList<hotel> hotelList) {
+            this.hotelList = hotelList;
+        }
+
+        hotelList(byte[] hotelListArray, int length)
         {
             ByteBuffer buffer=ByteBuffer.wrap(hotelListArray);
             int cursor=0;
@@ -277,12 +285,12 @@ public class searchActivity extends AppCompatActivity {
     private class hotelListAdapter extends ArrayAdapter<hotel> {
 
         public hotelListAdapter(){
-            super(searchActivity.this, R.layout.list_item, (List<hotel>) hotelList);
+            super(searchActivity.this, R.layout.list_item, (List<hotel>) hotels.hotelList);
         }
 
         public View getView(int position, View convertView, ViewGroup parent){
             View view = convertView;
-            hotel hotel = hotelList.getHotel(position);
+            hotel hotel = hotels.getHotel(position);
 
             if (convertView == null){       //if the view is null, create the view
                 view = getLayoutInflater().inflate(R.layout.list_item, parent, false);
