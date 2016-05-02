@@ -30,7 +30,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.Socket;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -51,7 +53,7 @@ public class searchActivity extends AppCompatActivity {
         Intent intent=getIntent();
         nameQuery = intent.getStringExtra("nameQuery");
         locationQuery = intent.getStringExtra("locationQuery");
-        new gethotelData().execute();
+//        new gethotelData().execute();
 
 
         /*hotel hotel = new hotel("a",2,3);
@@ -137,6 +139,14 @@ public class searchActivity extends AppCompatActivity {
                     in=new BufferedInputStream(hotelConnection.getInputStream());
                 }
             } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            try{
+                Socket socket = new Socket(InetAddress.getByName("Rachid-PC"), 8888);
+                in = new BufferedInputStream(socket.getInputStream());
+            }catch (IOException e) {
                 e.printStackTrace();
             }
 
