@@ -49,7 +49,7 @@ public class searchActivity extends AppCompatActivity {
         Intent intent=getIntent();
         nameQuery = intent.getStringExtra("nameQuery");
         locationQuery = intent.getStringExtra("locationQuery");
-        new gethotelData().execute();
+      //  new gethotelData().execute();
     }
 
 
@@ -293,7 +293,7 @@ public class searchActivity extends AppCompatActivity {
             name.setText(hotel.getName());             //find and set the name
 
             TextView rating = (TextView) view.findViewById(R.id.item_rating);
-            rating.setText(hotel.getRating());
+            rating.setText(Integer.toString(hotel.getRating()));
 
             TextView price = (TextView) view.findViewById(R.id.item_price);
             price.setText(Integer.toString(hotel.getPrice()));    //find and set the price
