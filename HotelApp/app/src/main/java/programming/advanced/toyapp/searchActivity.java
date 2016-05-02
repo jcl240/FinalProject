@@ -108,7 +108,7 @@ public class searchActivity extends AppCompatActivity {
 
             try
             {
-               // hotelURL=new URL("http://people.cs.georgetown.edu/~wzhou/hotel.data"); need to connect to server here
+               hotelURL=new URL("http://people.cs.georgetown.edu/~wzhou/hotel.data");
             }
 
             catch (MalformedURLException e)
@@ -230,6 +230,7 @@ public class searchActivity extends AppCompatActivity {
         private String name=null;
         private int rating=0;
         private int price=0;
+        private String location =null;
 
         public hotel(byte[] hotelByteArray)
         {
@@ -238,14 +239,19 @@ public class searchActivity extends AppCompatActivity {
             byte[] namebuffer=new byte[nameLength];
             hotelBuffer.get(namebuffer, 0, nameLength);
             this.name=new String(namebuffer);
+            nameLength=hotelBuffer.getInt();
+            namebuffer=new byte[nameLength];
+            hotelBuffer.get(namebuffer, 0, nameLength);
+            this.location=new String(namebuffer);
             this.price=hotelBuffer.getInt();
             this.rating=hotelBuffer.getInt();
         }
 
-        public hotel(String name, int price, int rating) {
+        public hotel(String name, String location, int price, int rating) {
             this.name = name;
             this.price = price;
             this.rating = rating;
+            this.location=location;
         }
     }
 
