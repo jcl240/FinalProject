@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.DragEvent;
@@ -53,8 +54,14 @@ public class searchActivity extends AppCompatActivity {
         Intent intent=getIntent();
         nameQuery = intent.getStringExtra("nameQuery");
         locationQuery = intent.getStringExtra("locationQuery");
+<<<<<<< HEAD:searchActivity.java
 
         new gethotelData().execute();
+=======
+        hotelData();
+        populateListView();
+//        new gethotelData().execute();
+>>>>>>> origin/master:HotelApp/app/src/main/java/programming/advanced/toyapp/searchActivity.java
 
 
         /*hotel hotel = new hotel("a",2,3);
@@ -71,7 +78,7 @@ public class searchActivity extends AppCompatActivity {
         rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             public void onRatingChanged(RatingBar ratingBar, float newRating,
                                         boolean fromUser) {
-                refreshNewRating((int)newRating);
+                refreshNewRating((int) newRating);
             }
         });
         price.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -86,6 +93,23 @@ public class searchActivity extends AppCompatActivity {
 
     public void refreshNewPrice(int newPrice){}
 
+<<<<<<< HEAD:searchActivity.java
+=======
+    public void hotelData(){
+        array.add(new hotel("Marriot", "NewYork", 2, 4));
+        array.add(new hotel("Hilton", "NewYork", 2, 3));
+        array.add(new hotel("Towers", "NewYork", 5, 5));
+        array.add(new hotel("Super 6", "NewYork", 1, 3));
+        array.add(new hotel("Belvedere", "NewDehli", 4, 5));
+        array.add(new hotel("Marriot", "NewEngland", 3, 4));
+        hotels = new hotelList(array);
+    }
+
+    byte[] hotelByte=null;
+    int byteLength=0;
+
+   
+>>>>>>> origin/master:HotelApp/app/src/main/java/programming/advanced/toyapp/searchActivity.java
     public void cancel(View view)
     {
         view.setOnClickListener(new View.OnClickListener() {
@@ -203,6 +227,10 @@ public class searchActivity extends AppCompatActivity {
 
     public class hotel
     {
+        public String getLocation() {
+            return location;
+        }
+
         public String getName() {
             return name;
         }
@@ -291,8 +319,19 @@ public class searchActivity extends AppCompatActivity {
             }
 
 
+
             TextView name = (TextView) view.findViewById(R.id.item_name);
-            name.setText(hotel.getName());             //find and set the name
+            name.setText(hotel.getName());//find and set the name
+            name.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent intent = new Intent(searchActivity.this,hotelActivity.class);
+                    startActivity(intent);
+                }
+            });
+          // name.setOnClickListener(new myListener(hotel));
+
+            TextView location = (TextView) view.findViewById(R.id.item_location);
+            location.setText(hotel.getLocation());
 
             TextView rating = (TextView) view.findViewById(R.id.item_rating);
             rating.setText(Integer.toString(hotel.getRating()));
@@ -303,4 +342,22 @@ public class searchActivity extends AppCompatActivity {
             return view;
         }
     }
+
+    public class myListener implements View.OnClickListener
+    {
+
+        hotel hotel;
+        public myListener(hotel data) {
+            this.hotel = data;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            Intent intent = new Intent(searchActivity.this,hotelActivity.class);
+            intent.putExtra("hotel", (Parcelable) hotel);
+            startActivity(intent);
+        }
+
+    };
 }
