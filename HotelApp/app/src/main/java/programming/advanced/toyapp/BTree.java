@@ -49,6 +49,14 @@ public class BTree<TKey extends Comparable<TKey>, TValue> {
 				this.root = n; 
 		}
 	}
+
+	public boolean isEmpty(){
+        if( root == null )
+            return true;
+        else
+            return false;
+
+    }
 	
 	/**
 	 * Search the leaf node which should contain the specified key
@@ -62,4 +70,24 @@ public class BTree<TKey extends Comparable<TKey>, TValue> {
 		
 		return (BTreeLeafNode<TKey, TValue>)node;
 	}
+
+    @SuppressWarnings("unchecked")
+    private boolean doesLeafNodeExist(TKey key) {
+        BTreeNode<TKey> node = this.root;
+        while (node.getNodeType() == TreeNodeType.InnerNode) {
+            node = ((BTreeInnerNode<TKey>)node).getChild( node.search(key) );
+        }
+
+        return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    public BTreeNode<TKey> getRightSibling(TKey key){
+        BTreeNode<TKey> node = this.root;
+        while (node.getNodeType() == TreeNodeType.InnerNode) {
+            node = ((BTreeInnerNode<TKey>)node).getChild( node.search(key) );
+        }
+
+        return node.getRightSibling();
+    }
 }
