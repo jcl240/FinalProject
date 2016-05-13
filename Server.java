@@ -78,7 +78,7 @@ public class Server
 		
 		try 
 		{
-			FileInputFormat.addInputPath(job, new Path("C:/Users/Rachid/Desktop/hotel-data-set-small.txt"));
+			FileInputFormat.addInputPath(job, new Path("/home/ubuntu/HotelApp"));
 			//Input path will be the text file that we will store in the cloud
 		} 
 		
@@ -92,7 +92,7 @@ public class Server
 			e.printStackTrace();
 		}
 		
-		FileOutputFormat.setOutputPath(job, new Path("C:/Users/Rachid/Desktop/hadoop-2.6.4/output-hotels"));
+		FileOutputFormat.setOutputPath(job, new Path("/home/ubuntu/HotelApp/output-hotels"));
 		
 		try 
 		{
@@ -119,7 +119,7 @@ public class Server
 	
 	public static void OutputFile(OutputStream out)
 	{
-		Path path=new Path("C:/Users/Rachid/Desktop/hadoop-2.6.4/output-hotels");
+		Path path=new Path("/home/ubuntu/HotelApp/output-hotelss");
 		Configuration conf=new Configuration();
 		FileSystem fs=null;
 		

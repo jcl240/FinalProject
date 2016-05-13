@@ -157,7 +157,7 @@ public class searchActivity extends AppCompatActivity {
 
             try
             {
-                socket=new Socket("10.129.225.141", 7777);
+                socket=new Socket("52.91.239.95", 7777);
             }
 
             catch (IOException e)
